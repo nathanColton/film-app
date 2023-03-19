@@ -1,31 +1,56 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
 import GoogleIcon from "../assets/icons/GoogleIcon";
 import { AuthContext } from "../context/AuthContext";
-const Login = () => {
+const Register = () => {
   const [info, setInfo] = useState({
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
   });
-  const { email, password } = info;
+  const { email, password, firstName, lastName } = info;
   const handleChange = (e) => {
     setInfo({ ...info, [e.target.id]: e.target.value });
   };
 
-  const { signIn, signUpProvider, forgotPassword } = useContext(AuthContext);
+  const { createUser, signUpProvider } = useContext(AuthContext);
   const handleSubmit = (e) => {
     e.preventDefault();
-    signIn(email, password);
+    const displayName = `${firstName} ${lastName} `;
+    createUser(email, password, displayName);
   };
 
   return (
     <div className="overflow-hidden flex-1 h-screen justify-center items-center bg-[#23242a]">
-      <div className={`form-container mt-[10vh] w-[380px] h-[500px]`}>
+      <div className={`form-container mt-[5vh] w-[380px] h-[580px]`}>
         <form onSubmit={handleSubmit}>
           <h2 className="text-red-main text-2xl font-[500] text-center tracking-[0.1em] mb-3">
-            Sign In
+            Sign Up
           </h2>
-
+          <div className="relative z-0 w-full mb-6 group">
+            <input
+              type="text"
+              name="floating_text"
+              className="peer"
+              placeholder=" "
+              required
+              id="firstName"
+              onChange={handleChange}
+            />
+            <label htmlFor="floating_email">First Name</label>
+          </div>
+          <div className="relative z-0 w-full mb-6 group">
+            <input
+              name="floating_text"
+              type="text"
+              required
+              className="peer"
+              placeholder=" "
+              id="lastName"
+              onChange={handleChange}
+            />
+            <label htmlFor="floating_text">Last Name</label>
+          </div>
           <div className="relative z-0 w-full mb-6 group">
             <input
               name="floating_email"
@@ -50,24 +75,9 @@ const Login = () => {
             />
             <label htmlFor="floating_password">Password</label>
           </div>
-          <div className="flex justify-between">
-            <span
-              className="py-3 font-[0.75em] cursor-pointer decoration-none text-gray-500 hover:text-[#ff4b45]"
-              onClick={() => forgotPassword(email)}
-            >
-              Forgot Password
-            </span>
-            <Link
-              className="py-3 font-[0.75em] cursor-pointer decoration-none text-gray-500 hover:text-[#ff4b45]"
-              to="/register"
-            >
-              Sign Up
-            </Link>
-          </div>
           <button className="btn-danger" type="submit">
-            Login
+            Register
           </button>
-
           <button
             className="flex justify-between text-center btn-danger"
             type="button"
@@ -82,4 +92,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
